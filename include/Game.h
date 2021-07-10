@@ -40,6 +40,7 @@ private:
                                             // GUI
     sf::Font                                font;
     sf::Text                                pointsText;
+    sf::Text                                gameOverText;
     sf::RectangleShape                      playerHealthBar;
     sf::RectangleShape                      playerHealthBarBackground;
 

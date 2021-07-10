@@ -38,6 +38,7 @@ Game::~Game()
     {
         delete *e;
     }
+    enemies.clear();
 
     delete player;
 }
@@ -48,7 +49,10 @@ void Game::run()
     while (window.isOpen())
     {
         processEvents();
-        update();
+        if (!player->isDead())
+        {
+            update();
+        }
         render();
     }
 }
@@ -116,7 +120,7 @@ void Game::updateInput()
     }
 
     // Player's attack
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && player->canAttack())
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && player->canAttack())
     {
         bullets.push_back(
             new Bullet(
@@ -197,8 +201,12 @@ void Game::updateEnemiesAndCombat()
         if (!enemyIsDestroyed)
         {
             if ((*e)->getBounds().top > window.getSize().y ||
-                (*e)->getBounds().intersects(player->getBounds()))
+                (*e)->getBounds().intersects(player->getBounds())) // Collision between player and enemy
             {
+                if (!((*e)->getBounds().top > window.getSize().y))
+                {
+                    player->reduceHealth((*e)->getDamage());
+                }
                 delete *e;
                 e = enemies.erase(e);
             }
@@ -285,6 +293,10 @@ void Game::renderGUI()
     window.draw(pointsText);
     window.draw(playerHealthBarBackground);
     window.draw(playerHealthBar);
+    if (player->isDead())
+    {
+        window.draw(gameOverText);
+    }
 }
 
 
@@ -318,11 +330,22 @@ void Game::initGUI()
     
     pointsText.setFont(font);
     pointsText.setCharacterSize(24);
-    pointsText.setPosition(20.f, 20.f);
+    pointsText.setString("Points: 0");
+    pointsText.setPosition(window.getSize().x - pointsText.getGlobalBounds().width - 20.f, 5.f);
 
+
+    gameOverText.setFont(font);
+    gameOverText.setCharacterSize(60);
+    gameOverText.setString("GAME OVER");
+    gameOverText.setColor(sf::Color::Red);
+    gameOverText.setPosition(
+        window.getSize().x / 2 - gameOverText.getGlobalBounds().width / 2,
+        window.getSize().y / 2 - gameOverText.getGlobalBounds().height
+    );
+  
 
     playerHealthBar.setSize(sf::Vector2f(100.f, 20.f));
-    playerHealthBar.setPosition(20.f, 60.f);
+    playerHealthBar.setPosition(20.f, 20.f);
     playerHealthBarBackground = playerHealthBar;
     playerHealthBarBackground.setFillColor(sf::Color(15, 15, 15, 180));
 

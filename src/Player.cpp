@@ -2,7 +2,7 @@
 
 
 Player::Player(const sf::Texture& texture)
-    : MAX_ATTACK_COOLDOWN(10), MAX_HEALTH(10)
+    : MAX_ATTACK_COOLDOWN(10), MAX_HEALTH(50)
 {
     initSprite(texture);
     initVariables();
@@ -98,7 +98,6 @@ void Player::initVariables()
 {
     movementSpeed = 7.f;
     attackCooldown = MAX_ATTACK_COOLDOWN;
-    //health = MAX_HEALTH;
-    health = 5;
+    health = MAX_HEALTH;
 }
 

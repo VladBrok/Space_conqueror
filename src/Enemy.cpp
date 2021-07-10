@@ -36,6 +36,12 @@ const int Enemy::getPoints() const
 }
 
 
+const int Enemy::getDamage() const
+{
+    return damage;
+}
+
+
 void Enemy::initShape(const float posX, const float posY)
 {
     shape.setPointCount(rand() % 8 + 3);
@@ -47,7 +53,7 @@ void Enemy::initShape(const float posX, const float posY)
 
 void Enemy::initVariables()
 {
-    damage          = 0;
+    damage          = shape.getPointCount();
     movementSpeed   = shape.getPointCount() / 2.f;
     points          = shape.getPointCount();
 }

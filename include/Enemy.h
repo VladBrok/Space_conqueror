@@ -12,8 +12,10 @@ public:
                             Enemy(const float positionX, const float positionY);
     void                    render(sf::RenderTarget& target) const;
     void                    move(const float dirX, const float dirY);
+
     const sf::FloatRect     getBounds() const;
     const int               getPoints() const;
+    const int               getDamage() const;
 
 private:
 
